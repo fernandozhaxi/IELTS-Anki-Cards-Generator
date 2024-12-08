@@ -79,8 +79,7 @@ async function processHtmlFilesNew() {
                 }
                 deck.addNote(model.note([currentWord, front, back], tagResult));
                 console.log(
-                  `[INFO] ${++cnt}/${
-                    files.length - 1
+                  `[INFO] ${++cnt}/${files.length - 1
                   } CURRENT WORD: ${currentWord}`
                 );
                 resolve();

@@ -8,7 +8,7 @@ const DEFAULT_WORKER_NUM = 8;
 
 // define directory path and file path
 const directoryPath = __dirname;
-const filePath = path.join(__dirname, "words.txt");
+const filePath = path.join(__dirname, "parsed_words.json");
 
 // define URL prefix
 const urlString =
@@ -91,8 +91,20 @@ async function workerExecution() {
 				writeToLog(`[ERR] ERROR READING FILE : ${err.message}`);
 				return;
 			}
+			let words = []
+			const d = JSON.parse(data)
+			console.log(d);
 
-			const words = data.split("\n");
+			for (const key in d) {
+				if (key === '职业') {
+					const element = d[key];
+					words = words.concat(...element)
+				}
+			}
+			console.log('单词数量', words.length)
+
+			// const words = data.split("\n");
+			// console.log('单词数量', words.length)
 			const numWorkers = DEFAULT_WORKER_NUM; // number of worker threads to create
 			const batchSize = Math.ceil(words.length / numWorkers); // calculate batch size
 			const workers = [];

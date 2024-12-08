@@ -1,6 +1,8 @@
 const fs = require("fs");
+const path = require("path");
 const LOG_FILE = "log_html2notes.txt";
-const DEFAULT_ROOT_DIR = "src/output/log/";
+// const DEFAULT_ROOT_DIR = "src/output/log/";
+const DEFAULT_ROOT_DIR = path.join(__dirname, "../output/log/");
 
 function write(message) {
   fs.appendFile(DEFAULT_ROOT_DIR + LOG_FILE, message, (err) => {
@@ -48,7 +50,7 @@ function writeToLog(message) {
         `MKDIR FAILED ` + err.message,
         callerName
       );
-      console.err(msg);
+      console.error(msg);
       write(msg);
     }
   } else {
