@@ -1384,8 +1384,6 @@ flask
 烧瓶
 shelf
 架子
-overheadproject or
-高架式放映机
 projector
 放映机
 computer

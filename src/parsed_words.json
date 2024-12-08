@@ -670,7 +670,8 @@
     "shine",
     "spring",
     "summer",
-    "autumn/fall",
+    "autumn",
+    "fall",
     "winter"
   ],
   "学习用具类": [
@@ -696,7 +697,6 @@
     "drawing pin",
     "paper clip",
     "biro",
-    "piece of paper",
     "paintbrush",
     "palette",
     "paints",
@@ -736,7 +736,6 @@
     "beaker",
     "flask",
     "shelf",
-    "overheadproject or",
     "projector",
     "computer",
     "stapler",

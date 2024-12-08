@@ -38,7 +38,7 @@ async function processWord(word) {
 	// concat strings
 	try {
 		const get = bent(urlString, "GET", "string", 200);
-		const data = await get(`/` + word);
+		const data = await get(`/` + word.toLowerCase());
 		const $ = cheerio.load(data);
 		// remove unusable icon and hint nodes
 		$(".daud").remove();
