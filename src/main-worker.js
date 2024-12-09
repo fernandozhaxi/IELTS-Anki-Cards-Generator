@@ -8,7 +8,7 @@ const DEFAULT_WORKER_NUM = 8;
 
 // define directory path and file path
 const directoryPath = __dirname;
-const filePath = path.join(__dirname, "./retry.txt");
+const filePath = path.join(__dirname, "./parsed_words.json");
 
 // define URL prefix
 const urlString =
@@ -38,11 +38,12 @@ async function processWord(word) {
 	// concat strings
 	try {
 		const get = bent(urlString, "GET", "string", 200);
-		if (word.indexOf(' ') > -1) {
-			word = word.replace(' ', '-')
+		let name = word
+		if (name.indexOf(' ') > -1) {
+			name = name.replace(' ', '-')
 		}
 		console.log('word')
-		const data = await get(`/` + word.toLowerCase());
+		const data = await get(`/` + name.toLowerCase());
 		const $ = cheerio.load(data);
 		// remove unusable icon and hint nodes
 		$(".daud").remove();
@@ -95,19 +96,16 @@ async function workerExecution() {
 				writeToLog(`[ERR] ERROR READING FILE : ${err.message}`);
 				return;
 			}
-			// let words = []
-			// const d = JSON.parse(data)
-			// console.log(d);
+			let words = []
+			const d = JSON.parse(data)
 
-			// for (const key in d) {
-			// 	if (key === '场所') {
-			// 		const element = d[key];
-			// 		words = words.concat(...element)
-			// 	}
-			// }
-			// console.log('单词数量', words.length)
-
-			const words = data.split("\n");
+			for (const key in d) {
+				if (key === currentKey) {
+					const element = d[key];
+					words = words.concat(...element)
+				}
+			}
+			// const words = data.split("\n");
 			console.log('单词数量', words.length)
 			const numWorkers = DEFAULT_WORKER_NUM; // number of worker threads to create
 			const batchSize = Math.ceil(words.length / numWorkers); // calculate batch size
@@ -149,4 +147,36 @@ async function workerExecution() {
 	}
 }
 
-workerExecution();
+// 将html中的文件移动到dist指定目录下
+
+let currentKey = '食物'
+async function main() {
+	await workerExecution();
+
+
+	// setTimeout(() => {
+	// 	const sourceDir = path.resolve(__dirname, 'output/html');
+	// 	const targetDir = path.resolve(__dirname, 'output/dist');
+	// 	const htmls = fs.readdirSync(sourceDir);
+	// 	const ensureDirExist = (dir) => {
+	// 		if (!fs.existsSync(dir)) {
+	// 			fs.mkdirSync(dir, { recursive: true });
+	// 		}
+	// 	};
+	// 	htmls.forEach((file) => {
+	// 		const sourcePath = path.join(sourceDir, file);
+	// 		if (fs.lstatSync(sourcePath).isFile()) {
+	// 			const targetPath = path.join(targetDir, currentKey, file);
+
+	// 			// 确保分类目录存在
+	// 			ensureDirExist(path.dirname(targetPath));
+
+	// 			// 移动文件
+	// 			fs.renameSync(sourcePath, targetPath);
+	// 		}
+	// 	});
+	// }, 1000)
+
+}
+
+main()

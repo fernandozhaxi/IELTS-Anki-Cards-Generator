@@ -1023,7 +1023,7 @@ ball
 球
 golf
 高尔夫
-bowing
+bowling
 保龄球
 ice-hockey
 冰球
@@ -1105,8 +1105,6 @@ judo
 柔道
 bungee jumping
 蹦极
-X-cycling
-极限自行车运动
 rock climbing
 攀岩
 playing chess
