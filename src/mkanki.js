@@ -6,12 +6,13 @@ const writeToLog = require("./utils/logger");
 
 const directoryPath = __dirname;
 const HTML_DIR = directoryPath + "/output/html/";
+const CSS_DIR = directoryPath + "/output/css/";
 const DEFAULT_DECK_NAME = "IELTS-CamDict-Words";
 const DEFAULT_NOTE_TYPE_NAME = "BasicCamCard";
 const DEFAULT_CSS_FILENAME = "common.css";
 const DEFAULT_APKG_NAME = DEFAULT_DECK_NAME + ".apkg";
 
-const cssData = fs.readFileSync(HTML_DIR + DEFAULT_CSS_FILENAME, "utf8");
+const cssData = fs.readFileSync(CSS_DIR + DEFAULT_CSS_FILENAME, "utf8");
 
 const model = new anki.Model({
   name: DEFAULT_NOTE_TYPE_NAME,
