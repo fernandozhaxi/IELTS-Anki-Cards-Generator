@@ -1,46 +1,24 @@
 const fs = require('fs');
-const path = require('path');
 
 // 读取文件内容
-const filePath = path.join(__dirname, 'words.txt');
-const content = fs.readFileSync(filePath, 'utf-8');
+fs.readFile('./words.txt', 'utf8', (err, data) => {
+  if (err) {
+    console.error('读取文件时发生错误:', err);
+    return;
+  }
 
-// 定义一个函数，判断是否是中文
-const isChinese = (str) => /[\u4e00-\u9fa5]/.test(str);
+  // 按行分割文本
+  const words = data.split('\n').map(word => word.trim());
 
-// 定义一个函数，去除中文字符
-const removeChinese = (str) => str.replace(/[\u4e00-\u9fa5]/g, '');
+  // 使用 Set 去除重复的单词，并保留顺序
+  const uniqueWords = [...new Set(words)];
 
-// 解析内容
-const parseContent = (content) => {
-  const result = {};
-  let currentGroup = null;
-
-  content.split('\n').forEach(line => {
-    line = line.trim();
-
-    // 判断是否是分组标识
-    const groupMatch = line.match(/^---(.*?)---$/);
-    if (groupMatch) {
-      currentGroup = groupMatch[1]; // 获取分组名
-      result[currentGroup] = [];
-    } else if (currentGroup && line) {
-      // 如果是单词，去除中文并归类到当前分组下
-      const cleanedLine = removeChinese(line);
-      if (cleanedLine) {
-        result[currentGroup].push(cleanedLine);
-      }
+  // 将去重后的单词写入新的文件
+  fs.writeFile('unique_words.txt', uniqueWords.join('\n'), (err) => {
+    if (err) {
+      console.error('写入文件时发生错误:', err);
+      return;
     }
+    console.log('去重后的单词已保存到 unique_words.txt');
   });
-
-  return result;
-};
-
-// 解析文件内容
-const parsedResult = parseContent(content);
-
-// 输出结果
-console.log(parsedResult);
-
-// 如果你想将结果保存到新的文件
-fs.writeFileSync(path.join(__dirname, 'parsed_words.json'), JSON.stringify(parsedResult, null, 2), 'utf-8');
+});
